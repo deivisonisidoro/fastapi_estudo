@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositories.product import ProductRepository
@@ -21,17 +21,25 @@ def list_products(db: Session = Depends(get_db)):
 
 @router.get("/{product_id}")
 def get_product(product_id: int, db: Session = Depends(get_db)):
-    product = ProductRepository(db=db).get(product_id)
-    return product
+    db_product = ProductRepository(db=db).get(product_id)
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
+    return db_product
 
 
 @router.patch("/{product_id}")
 def update_product(product_id: int, product: product_schema.Product, db: Session = Depends(get_db)):
+    db_product = ProductRepository(db=db).get(product_id)
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
     product = ProductRepository(db=db).update(product_id, product)
     return product
 
 
 @router.delete("/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
+    db_product = ProductRepository(db=db).get(product_id)
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
     ProductRepository(db=db).destroy(product_id=product_id)
     return {"msg": "Removido com sucesso"}
