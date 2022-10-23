@@ -1,32 +1,7 @@
-from fastapi import Depends, FastAPI
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
-from src.infra.sqlalchemy.config.database import get_db
-from src.infra.sqlalchemy.repositories.product import ProductRepository
-from src.schema import schema
+from src.routers import router
 
 app = FastAPI()
 
-
-@app.post("/products")
-def create_product(product: schema.Product, db: Session = Depends(get_db)):
-    product_created = ProductRepository(db=db).create(product=product)
-    return product_created
-
-
-@app.get("/products")
-def list_products(db: Session = Depends(get_db)):
-    products = ProductRepository(db=db).list()
-    return products
-
-
-@app.get("/products/{product_id}")
-def get_product(product_id: int, db: Session = Depends(get_db)):
-    product = ProductRepository(db=db).get(product_id=product_id)
-    return product
-
-
-@app.delete("/products/{product_id}")
-def delete_product(product_id: int, db: Session = Depends(get_db)):
-    ProductRepository(db=db).destroy(product_id=product_id)
-    return {"msg": "removido com sucesso"}
+app.include_router(router, prefix="")
