@@ -1,7 +1,7 @@
 venv
 .env
 db.sqlite3
-__pycache__/
+__pycache__
 tmp
 .pytest_cache
 test
