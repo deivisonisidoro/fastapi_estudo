@@ -36,7 +36,7 @@ class UserRepository:
         )
         return db_user
 
-    def get_by_email(self, email: str):
+    def get_by_email(self, email: str) -> models.User:
         return self.db.query(models.User).filter(models.User.email == email).first()
 
     def update(self, user_id: int, user: user_schema.UpdateUser):
