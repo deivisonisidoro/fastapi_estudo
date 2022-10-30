@@ -37,7 +37,7 @@ class UserRepository:
         )
         return db_user
 
-    def update(self, user_id: int, user: user_schema.User):
+    def update(self, user_id: int, user: user_schema.UpdateUser):
         db_user = self.db.get(models.User, user_id)
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():

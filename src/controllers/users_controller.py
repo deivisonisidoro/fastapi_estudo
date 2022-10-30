@@ -30,7 +30,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.patch("/{user_id}", status_code=status.HTTP_200_OK, response_model=user_schema.User)
-def update_user(user_id: int, user: user_schema.User, db: Session = Depends(get_db)):
+def update_user(user_id: int, user: user_schema.UpdateUser, db: Session = Depends(get_db)):
     db_user = UserRepository(db=db).get(user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")

@@ -30,7 +30,7 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 
 
 @router.patch("/{product_id}", status_code=status.HTTP_200_OK, response_model=product_schema.Product)
-def update_product(product_id: int, product: product_schema.Product, db: Session = Depends(get_db)):
+def update_product(product_id: int, product: product_schema.UpdateProduct, db: Session = Depends(get_db)):
     db_product = ProductRepository(db=db).get(product_id)
     if not db_product:
         raise HTTPException(status_code=404, detail="Produto não encontrado")

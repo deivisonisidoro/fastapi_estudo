@@ -31,7 +31,7 @@ class ProductRepository:
         )
         return db_product
 
-    def update(self, product_id: int, product: product_schema.Product):
+    def update(self, product_id: int, product: product_schema.UpdateProduct):
         db_product = self.db.get(models.Product, product_id)
         product_data = product.dict(exclude_unset=True)
         for key, value in product_data.items():
