@@ -8,13 +8,12 @@ class UserRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, user: user_schema.User):
-        fake_hashed_password = user.password + "notreallyhashed"
+    def create(self, user: user_schema.CreateUser):
         db_user = models.User(
             name=user.name,
             email=user.email,
             phone=user.phone,
-            password=fake_hashed_password,
+            password=user.password,
         )
         self.db.add(db_user)
         self.db.commit()
@@ -25,7 +24,7 @@ class UserRepository:
         db_users = self.db.query(models.User).all()
         return db_users
 
-    def get(self, user_id: int):
+    def get_by_id(self, user_id: int):
         db_user = (
             self.db.query(
                 models.User,
@@ -36,6 +35,9 @@ class UserRepository:
             .first()
         )
         return db_user
+
+    def get_by_email(self, email: str):
+        return self.db.query(models.User).filter(models.User.email == email).first()
 
     def update(self, user_id: int, user: user_schema.UpdateUser):
         db_user = self.db.get(models.User, user_id)
