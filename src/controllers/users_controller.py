@@ -25,7 +25,7 @@ def list_users(db: Session = Depends(get_db)):
 def get_user(user_id: int, db: Session = Depends(get_db)):
     db_user = UserRepository(db=db).get(user_id)
     if not db_user:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     return db_user
 
 
@@ -33,7 +33,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 def update_user(user_id: int, user: user_schema.UpdateUser, db: Session = Depends(get_db)):
     db_user = UserRepository(db=db).get(user_id)
     if not db_user:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     user = UserRepository(db=db).update(user_id, user)
     return user
 
@@ -42,6 +42,6 @@ def update_user(user_id: int, user: user_schema.UpdateUser, db: Session = Depend
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = UserRepository(db=db).get(user_id)
     if not db_user:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     UserRepository(db=db).destroy(user_id=user_id)
     return {"msg": "Removido com sucesso"}
