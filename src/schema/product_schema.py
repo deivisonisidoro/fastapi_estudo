@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from src.schema.user_schema import User
 
 
-class Product(BaseModel):
+class ProductBase(BaseModel):
     id: Union[int, None] = None
     name: str
     details: str
@@ -12,6 +12,8 @@ class Product(BaseModel):
     available: bool
     owner: Optional[User]
 
+
+class Product(ProductBase):
     class Config:
         orm_mode = True
 
