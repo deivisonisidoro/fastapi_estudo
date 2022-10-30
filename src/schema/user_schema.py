@@ -3,12 +3,23 @@ from typing import Optional, Union
 from pydantic import BaseModel
 
 
-class User(BaseModel):
+class UserBase(BaseModel):
     id: Union[int, None] = None
     name: str
     email: str
-    password: str
     phone: str
+
+
+class CreateUser(UserBase):
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
+class User(UserBase):
+    class Config:
+        orm_mode = True
 
 
 class UpdateUser(BaseModel):
