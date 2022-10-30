@@ -26,7 +26,7 @@ Para instalar as dependências do projeto é necessário usar o comando:
 
 Para iniciar o servidor é necessário usar o comando:
 
-`uvicorn main:app --reload`
+`uvicorn src.server:app --reload`
 
 ## Banco de dados
 

@@ -9,12 +9,7 @@ class ProductRepository:
         self.db = db
 
     def create(self, product: product_schema.Product):
-        db_product = models.Product(
-            name=product.name,
-            available=product.available,
-            details=product.details,
-            price=product.price,
-        )
+        db_product = models.Product(**product.dict())
         self.db.add(db_product)
         self.db.commit()
         self.db.refresh(db_product)
