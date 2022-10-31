@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from src.infra.providers.hash_provider import get_password_hash
+from src.infra.providers.user_provider import get_current_user
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositories.user import UserRepository
 from src.schema import user_schema
@@ -50,3 +51,8 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     UserRepository(db=db).destroy(user_id=user_id)
     return {"msg": "Removido com sucesso"}
+
+
+@router.get("/me/", response_model=user_schema.User)
+async def read_users_me(current_user: user_schema.User = Depends(get_current_user)):
+    return current_user
